@@ -50,6 +50,7 @@
         <label for="node-input-shardid"><i class="fa fa-tag"></i> Shard Id</label>
         <select id="node-input-shardid" >
         </select>
+        <span id="shardid-refresh-icon" class="octicon octicon-sync" style="cursor: pointer"></span>
     </div>
     <div class="form-row input-iteratortype-row hidden">
         <label for="node-input-iteratortype"><i class="fa fa-tag"></i> Shard Iterator Type</label>
@@ -112,15 +113,21 @@
         oneditprepare: function () {
             kinesisNode = RED.nodes.node(this.id);
 
-            $("#node-input-streamname").change(function () {
-                var id = $("#node-input-streamname").val();
-                var opr = $("#node-input-operation option:selected").val();
-                if(id != kinesisNode.streamname){
-                    $("#node-input-shardid").val("");
-                }
-                if( id && opr == 'getsharditerator' ){
-                    window.kinesisNodeIntervalId = window.setTimeout(pollKinesisDescribeStream,2000);
-                }
+            //start polling of shard ids when the operation is already selected
+            var operation = $("#node-input-operation option:selected").val();
+            if(operation == "getrecords") {
+              pollKinesisDescribeStream();
+            }
+
+            $("#shardid-refresh-icon").click(function () {
+              var id = $("#node-input-streamname").val();
+              var opr = $("#node-input-operation option:selected").val();
+              if(id != kinesisNode.streamname){
+                  $("#node-input-shardid").val("");
+              }
+              if( id && opr == 'getsharditerator' ){
+                  window.kinesisNodeIntervalId = window.setTimeout(pollKinesisDescribeStream,2000);
+              }
             });
 
             $("#node-input-shardid").change(function () {
