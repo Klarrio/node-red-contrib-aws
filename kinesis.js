@@ -103,15 +103,15 @@ module.exports = function(RED) {
       var AWS = null;
       if (kinesisNode && kinesisNode.awsConfig && kinesisNode.awsConfig.AWS) {
         AWS = kinesisNode.awsConfig ? kinesisNode.awsConfig.AWS : null;
-      } else {
+      } else if (req.query.accesskeyid) {
         AWS = require("aws-sdk");
         AWS.config.update({
-                accessKeyId: req.query.accesskeyid,
-                secretAccessKey: req.query.secretaccesskey,
-            });
+            accessKeyId: req.query.accesskeyid,
+            secretAccessKey: req.query.secretaccesskey,
+        });
       }
 
-      if (!AWS && kinesisNode) {
+      if (!AWS) {
         return res.send('{"error": "error: Missing AWS credentials"}');
       }
 
