@@ -204,7 +204,7 @@
 
         var param = "";
         if(kinesisNode.aws || configid ||
-            ( awsconfig.credentials && awsconfig.credentials.accesskeyid && awsconfig.credentials.secretaccesskey ) ){
+            ( awsconfig && awsconfig.credentials && awsconfig.credentials.accesskeyid && awsconfig.credentials.secretaccesskey ) ){
           if (awsconfig.credentials) {
             param = '&accesskeyid=' + encodeURIComponent(awsconfig.credentials.accesskeyid) +
               '&secretaccesskey=' + encodeURIComponent(awsconfig.credentials.secretaccesskey);
