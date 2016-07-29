@@ -101,9 +101,8 @@ module.exports = function(RED) {
       var streamName = req.query.streamname;
 
       var AWS = null;
-//      var AWS = kinesisNode.awsConfig ? kinesisNode.awsConfig.AWS : null;
-      if (kinesisNode) {
-        AWS = kinesisNode.awsConfig ? kinesisNode.awsConfig.AWS : null;
+      if (kinesisNode && kinsesisNode.awsConfig && kinsesisNode.awsConfig.AWS) {
+        AWS = kinesisNode.awsConfig.AWS;
       } else {
         AWS = require("aws-sdk");
         AWS.config.update({
