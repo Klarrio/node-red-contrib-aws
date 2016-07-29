@@ -102,10 +102,10 @@ module.exports = function(RED) {
 
       var AWS = null;
       if (kinesisNode && kinesisNode.awsConfig && kinesisNode.awsConfig.AWS) {
-        console.log("using kinesisnode awsconfig")
+        console.log("using kinesisnode awsconfig");
         AWS = kinesisNode.awsConfig ? kinesisNode.awsConfig.AWS : null;
       } else if (req.query.accesskeyid) {
-        console.log("using request accesskey and secretkey")
+        console.log("using request accesskey and secretkey");
         AWS = require("aws-sdk");
         AWS.config.update({
             accessKeyId: req.query.accesskeyid,
@@ -117,7 +117,7 @@ module.exports = function(RED) {
         return res.send('{"error": "error: Missing AWS credentials"}');
       }
 
-      console.log("using accessKey " + AWS.config.credentials.accessKeyId " and secret key " + AWS.config.credentials.secretAccessKey)
+      console.log("using accessKey " + AWS.config.credentials.accessKeyId + " and secret key " + AWS.config.credentials.secretAccessKey);
 
 //        var kinesis = new AWS.Kinesis();
       var kinesis = new AWS.Kinesis( { 'region': kinesisRegion } );
