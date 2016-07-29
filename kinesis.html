@@ -114,7 +114,8 @@
             kinesisNode = RED.nodes.node(this.id);
 
             //start polling of shard ids when the operation is already selected
-            if(kinesisNode.operation == "getrecords") {
+            console.log("operation type: " + operation);
+            if(this.operation == "getrecords") {
               pollKinesisDescribeStream();
             }
 
