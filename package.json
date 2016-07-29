@@ -4,8 +4,7 @@
   "description": "A collection of Node-RED nodes for AWS.",
   "dependencies"  : {
     "aws-sdk": "^2.0.15",
-    "minimatch": "3.0.2",
-    "octicons": "4.3.0"
+    "minimatch": "3.0.2"
   },
   "repository": {
     "type": "git",
