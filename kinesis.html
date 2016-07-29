@@ -213,7 +213,7 @@
           var stream = $("#node-input-streamname").val();
           $.getJSON('amazon-kinesis/describestream?id='+kinesisNode.id+'&region='+region+'&streamname='+stream+param,
             function(data) {
-              if (data) {
+              if (data && data.StreamDescription) {
                 updateKinesisShardList(data);
                 delete window.kinesisNodeIntervalId;
               } else {
