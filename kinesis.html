@@ -44,8 +44,7 @@
     </div>
     <div class="form-row input-streamname-row hidden">
         <label for="node-input-streamname"><i class="fa fa-table"></i> Stream Name</label>
-        <select id="node-input-streamname" >
-        </select>
+        <input type="text" id="node-input-streamname" >
     </div>
     <div class="form-row input-shardid-row hidden">
         <label for="node-input-shardid"><i class="fa fa-tag"></i> Shard Id</label>
@@ -112,27 +111,9 @@
         },
         oneditprepare: function () {
             kinesisNode = RED.nodes.node(this.id);
-            $("#node-input-region").change(function () {
-                var id = $("#node-input-region option:selected").val();
-                var opr = $("#node-input-operation option:selected").val();
-                if(id != kinesisNode.region){
-                    $("#node-input-streamname").val("");
-                }
-                if( id && ( opr == 'putrecord' || opr == 'getsharditerator' ) ){
-                    window.kinesisNodeIntervalId = window.setTimeout(pollKinesisStream,2000);
-                }
-            });
-
-            $("#node-input-operation").change(function () {
-                var id = $("#node-input-region option:selected").val();
-                var opr = $("#node-input-operation option:selected").val();
-                if( id && ( opr == 'putrecord' || opr == 'getsharditerator' ) ){
-                    window.kinesisNodeIntervalId = window.setTimeout(pollKinesisStream,2000);
-                }
-            });
 
             $("#node-input-streamname").change(function () {
-                var id = $("#node-input-streamname option:selected").val();
+                var id = $("#node-input-streamname").val();
                 var opr = $("#node-input-operation option:selected").val();
                 if(id != kinesisNode.streamname){
                     $("#node-input-shardid").val("");
@@ -197,41 +178,6 @@
    });
 
     var kinesisNode;
-    function updateKinesisStreamList(lists) {
-        var streams = $("#node-input-streamname");
-        streams.children("option").remove();
-        streams.append('<option value=""> == select Stream == </option>');
-        $.each(lists.StreamNames, function(i, opt){
-            streams.append('<option value="' + opt + '">' + opt + '</option>');
-        });
-        streams.val(kinesisNode.streamname);
-        if(kinesisNode.streamname) streams.change();
-    }
-
-    function pollKinesisStream() {
-        var configid = $("#node-input-aws option:selected").val();
-        var awsconfig = RED.nodes.node(configid);
-
-        var param = "";
-        if(kinesisNode.aws || configid 
-            || ( awsconfig.credentials && awsconfig.credentials.accesskeyid && awsconfig.credentials.secretaccesskey ) ){
-          if (awsconfig.credentials) {
-            param = '&accesskeyid='+awsconfig.credentials.accesskeyid+'&secretaccesskey='+awsconfig.credentials.secretaccesskey;
-          }
-          var region = $("#node-input-region option:selected").val();
-          $.getJSON('amazon-kinesis/liststreams?id='+kinesisNode.id+'&region='+region+param,
-            function(data) {
-              if (data) {
-                updateKinesisStreamList(data);
-                delete window.kinesisNodeIntervalId;
-              } else {
-                window.kinesisNodeIntervalId = window.setTimeout(pollKinesisStream,2000);
-              }
-          });
-        }else{
-          window.kinesisNodeIntervalId = window.setTimeout(pollKinesisStream,2000);
-        }
-    }
 
     function updateKinesisShardList(lists) {
         var sqNumObj = {};
@@ -257,7 +203,7 @@
             param = '&accesskeyid='+awsconfig.credentials.accesskeyid+'&secretaccesskey='+awsconfig.credentials.secretaccesskey;
           }
           var region = $("#node-input-region option:selected").val();
-          var stream = $("#node-input-streamname option:selected").val();
+          var stream = $("#node-input-streamname").val();
           $.getJSON('amazon-kinesis/describestream?id='+kinesisNode.id+'&region='+region+'&streamname='+stream+param,
             function(data) {
               if (data) {

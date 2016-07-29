@@ -95,39 +95,6 @@ module.exports = function(RED) {
     }
     RED.nodes.registerType("amazon kinesis", AmazonKinesisQueryNode);
 
-
-    RED.httpAdmin.get('/amazon-kinesis/liststreams', function(req, res) {
-      var kinesisNode = RED.nodes.getNode(req.query.id);
-      var kinesisRegion = req.query.region;
-
-      var AWS = null;
-//      var AWS = kinesisNode.awsConfig ? kinesisNode.awsConfig.AWS : null;
-      if (kinesisNode) {
-        AWS = kinesisNode.awsConfig ? kinesisNode.awsConfig.AWS : null;
-      } else {
-        AWS = require("aws-sdk");
-        AWS.config.update({
-                accessKeyId: req.query.accesskeyid,
-                secretAccessKey: req.query.secretaccesskey,
-            });
-      }
-
-      if (!AWS) {
-        return node.send('{"error": "Missing AWS credentials"}');
-      }
-
-//        var kinesis = new AWS.Kinesis();
-      var kinesis = new AWS.Kinesis( { 'region': kinesisRegion } );
-
-      kinesis.listStreams({}, function(err, data) {
-        if (err) {
-          return res.send('{"error": "error:' + err.toString() + '"}');
-        }
-        res.send(data);
-      });
-    });
-
-
     RED.httpAdmin.get('/amazon-kinesis/describestream', function(req, res) {
       var kinesisNode = RED.nodes.getNode(req.query.id);
       var kinesisRegion = req.query.region;
