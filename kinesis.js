@@ -112,8 +112,8 @@ module.exports = function(RED) {
             });
       }
 
-      if (!AWS) {
-        return node.send('{"error": "Missing AWS credentials"}');
+      if (!AWS && kinesisNode) {
+        return kinesisNode.send('{"error": "Missing AWS credentials"}');
       }
 
 //        var kinesis = new AWS.Kinesis();
