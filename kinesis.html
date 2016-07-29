@@ -207,7 +207,8 @@
         if(kinesisNode.aws || configid ||
             ( awsconfig.credentials && awsconfig.credentials.accesskeyid && awsconfig.credentials.secretaccesskey ) ){
           if (awsconfig.credentials) {
-            param = '&accesskeyid='+awsconfig.credentials.accesskeyid+'&secretaccesskey='+awsconfig.credentials.secretaccesskey;
+            param = '&accesskeyid=' + encodeURIComponent(awsconfig.credentials.accesskeyid) +
+              '&secretaccesskey=' + encodeURIComponent(awsconfig.credentials.secretaccesskey);
           }
           var region = $("#node-input-region option:selected").val();
           var stream = $("#node-input-streamname").val();
